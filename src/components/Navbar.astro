@@ -1,55 +1,210 @@
+---
+import NavLogo from '../assets/agiinfinity-logo.png';
+---
+
 <style>
-  .header {
+  header {
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    color: #f8f9fa;
+    box-shadow:
+      rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+      rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+      rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    transition: background-color 500ms ease-in-out;
+    padding: 1em 1.3em;
+  }
+
+  header.header-1000 {
+    background-color: black;
+  }
+  header.header-900 {
+    background-color: var(--dark-900);
+  }
+  header.header-800 {
+    background-color: var(--dark-800);
+  }
+  header.header-700 {
+    background-color: var(--dark-700);
+  }
+
+  .header_logo {
+    height: 50px;
+    width: 70px;
+  }
+  .header-container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0.7em 0.5em;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    /* From https://css.glass */
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(5px););
-  }
-  .nav_logo {
-    height: 100px;
-    width: 100px;
+    padding: 1em 2.3em;
   }
 
-  .nav_list {
+  .primary-navigation {
     display: flex;
-    gap: 1em;
-    padding-right: 2rem;
-    align-items: center;
+    gap: 1.3em;
   }
 
-  .nav_link {
-    font-size: 1.4rem;
-    text-decoration: none;
-    color: var(--white-tinted);
+  .nav-list_item a {
+    color: var(--white-200);
+    font-family: "Orbitron", sans-serif;
+    text-transform: uppercase;
+  }
+
+  .mobile-nav-toggle {
+    display: none;
+  }
+
+  @media screen and (max-width: 35em) {
+    /* .header-container {
+            
+            } */
+
+    .header-logo {
+      z-index: 2;
+    }
+
+    .primary-navigation {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 3em;
+      position: fixed;
+      inset: 0;
+      padding: 0em 0em;
+      flex-direction: column;
+      transform: translateY(-300%);
+      background-color: #353535;
+      transition: transform 350ms ease-out;
+    }
+
+    .primary-navigation[data-visible="true"] {
+      transform: translateX(0%);
+    }
+
+    .mobile-nav-toggle {
+      display: block;
+      position: absolute;
+      width: 2rem;
+      aspect-ratio: 1;
+      top: 1rem;
+      right: 2rem;
+      z-index: 9999;
+      /* padding: 1em; */
+    }
+
+    .mobile-nav-toggle svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .mobile-nav-toggle line {
+      transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+      transform-origin: center;
+      transform-box: fill-box;
+    }
+
+    .mobile-nav-toggle[aria-expanded="true"] line:nth-of-type(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .mobile-nav-toggle[aria-expanded="true"] line:nth-of-type(2) {
+      opacity: 0;
+    }
+
+    .mobile-nav-toggle[aria-expanded="true"] line:nth-of-type(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
   }
 </style>
 
-<header class="header" id="header">
-  <img src="/images/agiinfinity-logo.png" alt="" class="nav_logo" />
-  <nav class="nav">
-    <ul class="nav_list">
-      <li class="nav_list-item">
-        <a href="" class="nav_link">Focus</a>
-      </li>
-      <li class="nav_list-item">
-        <a href="" class="nav_link"></a>
-      </li>
-      <li class="nav_list-item">
-        <a href="" class="nav_link">Why AGI</a>
-      </li>
-      <li class="nav_list-item">
-        <a href="" class="nav_link">Working With Us</a>
-      </li>
-      <li class="nav_list-item">
-        <a href="" class="nav_link">Contact</a>
-      </li>
-    </ul>
-  </nav>
+<div id="stickyWatcher" 'data-stick-watcher'></div>
+<header>
+  <div id="headerContainer" class="header-container">
+    <a href="#" class="header_logo"><img src={NavLogo.src} alt=""></a>
+    <button
+      id="mobileNavToggle"
+      class="mobile-nav-toggle"
+      aria-controls="primaryNavigation"
+      aria-expanded="false"
+      ><span class="visually-hidden">Menu</span><svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <nav>
+      <ul
+        id="primaryNavigation"
+        class="primary-navigation"
+        data-visible="false"
+      >
+        <li class="nav-list_item"><a href="#matters">Why this matters</a></li>
+        <li class="nav-list_item"><a href="#devFocus">Development focus</a></li>
+        <li class="nav-list_item"><a href="#whyAGI">Why AGI</a></li>
+        <li class="nav-list_item"><a href="#workingWithUs">Working with us</a></li>
+        <li class="nav-list_item"><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
 </header>
+
+<script>
+  const header = document.querySelector("header")!;
+  const primaryNav = document.querySelector("#primaryNavigation")!;
+  const navToggle = document.querySelector("#mobileNavToggle")!;
+  const stickyWatcher = document.querySelector("#stickyWatcher")!;
+  const headerColourWatchers = document.querySelectorAll("[data-header")!;
+
+  console.log(primaryNav);
+
+  navToggle.addEventListener("click", () => {
+    const visibility = primaryNav.getAttribute("data-visible");
+    console.log(visibility);
+    if (visibility === "false") {
+      primaryNav.setAttribute("data-visible", "true");
+      navToggle.setAttribute("aria-expanded", "true");
+    } else {
+      primaryNav.setAttribute("data-visible", "false");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  const navObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+        const headerColour = entry.target.getAttribute("data-header");
+        header.classList = "";
+        header.classList.add(`header-${headerColour}`);
+      });
+    },
+    {
+      root: null,
+      rootMargin: "0px 0px -90% 0px",
+      threshold: 0,
+    },
+  );
+
+  // Header background toggle
+  headerColourWatchers.forEach((headerColourWatcher) => {
+    navObserver.observe(headerColourWatcher);
+  });
+
+  // //   STICKY CLASS TOGGLE
+  // const navObserver = new IntersectionObserver((entries) => {
+  //   header.classList.toggle("is-sticking", !entries[0].isIntersecting);
+  // });
+
+  // navObserver.observe(stickyWatcher);
+</script>
